@@ -1,3 +1,37 @@
+// Generate mock data if localStorage is empty
+if (!localStorage.getItem("workouts")) {
+    const mockWorkouts = [
+        {
+            sport: "Running",
+            duration: 45,
+            dateTime: "2025-10-05T07:30",
+            description: "Morning jog around the park"
+        },
+        {
+            sport: "Yoga",
+            duration: 30,
+            dateTime: "2025-10-04T20:00",
+            description: "Evening relaxation session"
+        },
+        {
+            sport: "Cycling",
+            duration: 60,
+            dateTime: "2025-10-03T09:15",
+            description: "Weekend ride with friends"
+        },
+        {
+            sport: "Swimming",
+            duration: 50,
+            dateTime: "2025-10-01T14:00",
+            description: "Lap practice at the gym"
+        }
+    ];
+    localStorage.setItem("workouts", JSON.stringify(mockWorkouts));
+    console.log("✅ Mock workout data created!");
+}
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     // ---------- SIGNUP ----------
     const signupForm = document.getElementById("signupForm");
@@ -67,26 +101,49 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = document.getElementById("message");
     const workoutTable = document.getElementById("workoutTable");
 
-    // Load saved workouts (from localStorage for demo)
-    const workouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+    let workouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+    let editIndex = null; // track which item is being edited
 
     const renderWorkouts = () => {
         workoutTable.innerHTML = "";
-        workouts.forEach((w) => {
+        workouts.forEach((w, index) => {
             const row = document.createElement("tr");
             row.innerHTML = `
           <td>${w.sport}</td>
           <td>${w.duration}</td>
           <td>${new Date(w.dateTime).toLocaleString()}</td>
           <td>${w.description || "-"}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" onclick="editWorkout(${index})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteWorkout(${index})">Delete</button>
+          </td>
         `;
             workoutTable.appendChild(row);
         });
     };
 
+    // Make functions global for button access
+    window.editWorkout = (index) => {
+        const w = workouts[index];
+        document.getElementById("sport").value = w.sport;
+        document.getElementById("duration").value = w.duration;
+        document.getElementById("dateTime").value = w.dateTime;
+        document.getElementById("description").value = w.description || "";
+        editIndex = index;
+        message.innerHTML = `<div class="alert alert-info">Editing record #${index + 1}</div>`;
+    };
+
+    window.deleteWorkout = (index) => {
+        if (confirm("Are you sure you want to delete this record?")) {
+            workouts.splice(index, 1);
+            localStorage.setItem("workouts", JSON.stringify(workouts));
+            renderWorkouts();
+            message.innerHTML = `<div class="alert alert-warning">Workout deleted</div>`;
+        }
+    };
+
     renderWorkouts();
 
-    // Handle form submission
     if (workoutForm) {
         workoutForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -101,10 +158,19 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const newWorkout = { sport, duration, dateTime, description };
-            workouts.push(newWorkout);
-            localStorage.setItem("workouts", JSON.stringify(workouts));
 
-            message.innerHTML = `<div class="alert alert-success">Workout saved!</div>`;
+            if (editIndex !== null) {
+                // 🟢 Update existing workout
+                workouts[editIndex] = newWorkout;
+                message.innerHTML = `<div class="alert alert-success">Workout updated successfully!</div>`;
+                editIndex = null; // reset
+            } else {
+                // 🟢 Add new workout
+                workouts.push(newWorkout);
+                message.innerHTML = `<div class="alert alert-success">Workout saved!</div>`;
+            }
+
+            localStorage.setItem("workouts", JSON.stringify(workouts));
             workoutForm.reset();
             renderWorkouts();
         });
