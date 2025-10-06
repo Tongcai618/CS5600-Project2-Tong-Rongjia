@@ -35,64 +35,48 @@ if (!localStorage.getItem("workouts")) {
 document.addEventListener("DOMContentLoaded", () => {
     // ---------- SIGNUP ----------
     const signupForm = document.getElementById("signupForm");
-    const signupMsg = document.getElementById("message");
+    const messageDiv = document.getElementById("message");
 
-    if (signupForm) {
-        signupForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
+    signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-            try {
-                const res = await fetch("http://localhost:3000/auth/signup", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username, password }),
-                });
-                const data = await res.json();
+        // Collect form data
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-                if (res.ok) {
-                    signupMsg.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-                    setTimeout(() => (window.location.href = "/login.html"), 1500);
-                } else {
-                    signupMsg.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
-                }
-            } catch (err) {
-                signupMsg.innerHTML = `<div class="alert alert-danger">Server error</div>`;
+        if (!name || !email || !password) {
+            messageDiv.innerHTML = `<div class="alert alert-danger">Please fill in all fields</div>`;
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name, email, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                messageDiv.innerHTML = `<div class="alert alert-success">${data.message || "Account created successfully!"}</div>`;
+                signupForm.reset();
+
+                // Optionally redirect after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = "/login.html";
+                }, 1500);
+            } else {
+                messageDiv.innerHTML = `<div class="alert alert-danger">${data.message || "Registration failed."}</div>`;
             }
-        });
-    }
-
-    // ---------- LOGIN ----------
-    const loginForm = document.getElementById("loginForm");
-    const loginMsg = document.getElementById("loginMessage");
-
-    if (loginForm) {
-        loginForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const username = document.getElementById("loginUsername").value.trim();
-            const password = document.getElementById("loginPassword").value.trim();
-
-            try {
-                const res = await fetch("http://localhost:3000/auth/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username, password }),
-                });
-                const data = await res.json();
-
-                if (res.ok) {
-                    loginMsg.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-                    localStorage.setItem("token", data.token); // store JWT
-                    setTimeout(() => (window.location.href = "/index.html"), 1500);
-                } else {
-                    loginMsg.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
-                }
-            } catch (err) {
-                loginMsg.innerHTML = `<div class="alert alert-danger">Server error</div>`;
-            }
-        });
-    }
+        } catch (err) {
+            console.error("Error:", err);
+            messageDiv.innerHTML = `<div class="alert alert-danger">Server error. Please try again later.</div>`;
+        }
+    });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
