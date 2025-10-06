@@ -17,6 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.37.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.0.1",
@@ -28,6 +29,8 @@
     "prettier": "^3.6.2"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongodb": "^6.20.0"
   }
 }
