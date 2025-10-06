@@ -1,12 +1,14 @@
 // backend.js
 import express from "express";
 import { MongoClient, ObjectId } from "mongodb";
-import "dotenv/config";
+import dotenv from "dotenv";
 import cors from "cors";
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGODB_URI;
 
 // ===== middleware =====
 app.use(cors());
