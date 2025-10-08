@@ -1,35 +1,3 @@
-// Generate mock data if localStorage is empty
-if (!localStorage.getItem("workouts")) {
-  const mockWorkouts = [
-    {
-      sport: "Running",
-      duration: 45,
-      dateTime: "2025-10-05T07:30",
-      description: "Morning jog around the park",
-    },
-    {
-      sport: "Yoga",
-      duration: 30,
-      dateTime: "2025-10-04T20:00",
-      description: "Evening relaxation session",
-    },
-    {
-      sport: "Cycling",
-      duration: 60,
-      dateTime: "2025-10-03T09:15",
-      description: "Weekend ride with friends",
-    },
-    {
-      sport: "Swimming",
-      duration: 50,
-      dateTime: "2025-10-01T14:00",
-      description: "Lap practice at the gym",
-    },
-  ];
-  localStorage.setItem("workouts", JSON.stringify(mockWorkouts));
-  console.log("Mock workout data created!");
-}
-
 const BASE_URL = "http://54.211.172.19:3000";
 
 document.addEventListener("DOMContentLoaded", () => {
