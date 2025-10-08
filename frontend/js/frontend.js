@@ -1,3 +1,4 @@
+const BASE_URL = "http://54.211.172:3000";
 // Generate mock data if localStorage is empty
 if (!localStorage.getItem("workouts")) {
   const mockWorkouts = [
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("loginPassword").value.trim();
 
       try {
-        const response = await fetch("http://localhost:3000/api/login", {
+        const response = await fetch(`${BASE_URL}/api/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -98,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/register", {
+      const response = await fetch(`${BASE_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
