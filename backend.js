@@ -57,6 +57,56 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
+// Login
+app.post("/api/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // check for missing fields
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Email and password are required." });
+    }
+
+    // connect fitness_register_db
+    const registerClient = new MongoClient(uri);
+    await registerClient.connect();
+    const db = registerClient.db("fitness_register_db");
+    const users = db.collection("users");
+
+    // find user by email
+    const user = await users.findOne({ email });
+
+    if (!user) {
+      await registerClient.close();
+      return res
+        .status(401)
+        .json({ success: false, message: "User not found." });
+    }
+
+    // check password
+    if (user.password !== password) {
+      await registerClient.close();
+      return res
+        .status(401)
+        .json({ success: false, message: "Incorrect password." });
+    }
+
+    // successful login
+    await registerClient.close();
+    return res.status(200).json({
+      success: true,
+      message: "Login successful!",
+      userId: user._id,
+      name: user.name,
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ success: false, message: "Login failed." });
+  }
+});
+
 // ===== fitness recording CRUD =====
 
 // Create
