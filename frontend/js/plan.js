@@ -56,15 +56,16 @@ document.getElementById("generatePlanBtn").addEventListener("click", async () =>
         const data = await aiRes.json();
         loading.style.display = "none";
 
-        // Render AI-generated plan
+        // Generate the plan
         planContainer.innerHTML = `
-        <div class="card shadow p-4">
+        <div class="card shadow p-4 text-start" style="text-align: left;">
           <h4 class="text-success mb-3">🏆 Your AI Fitness Plan</h4>
-          <div class="markdown-body" style="font-size: 1rem; line-height: 1.6;">
+          <div class="markdown-body" style="font-size: 1rem; line-height: 1.6; text-align: left;">
             ${marked.parse(data.plan)}
           </div>
         </div>
       `;
+
 
     } catch (err) {
         console.error("Error generating plan:", err);

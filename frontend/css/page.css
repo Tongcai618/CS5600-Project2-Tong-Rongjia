@@ -1,0 +1,23 @@
+body {
+    font-family: "Poppins", sans-serif;
+    background: url("../../images/fitness-sub-bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    /* makes image fill the screen */
+    min-height: 100vh;
+}
+
+.card {
+    border: none;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 3rem 2rem;
+    max-width: 2000px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
