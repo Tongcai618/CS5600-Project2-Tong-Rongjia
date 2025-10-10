@@ -1,5 +1,7 @@
+[build]
+  functions = "netlify/functions"
+
 [[redirects]]
   from = "/api/*"
-  to = "http://54.211.172.19:3000/api/:splat"
+  to = "/.netlify/functions/proxy/:splat"
   status = 200
-  force = true
