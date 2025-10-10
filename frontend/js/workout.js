@@ -1,5 +1,6 @@
-const BASE_URL = "http://54.211.172.19:3000";
+// const BASE_URL = "http://54.211.172.19:3000";
 // const BASE_URL = "http://localhost:3000"
+const BASE_URL = "/api";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const workoutForm = document.getElementById("workoutForm");
