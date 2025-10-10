@@ -7,6 +7,10 @@ Cai Tong, Rongjia Sun
 ## Class Link
 [CS5610WebDev Online]
 
+https://northeastern.instructure.com/courses/226004
+
+[project2]
+
 https://northeastern.instructure.com/courses/226004/assignments/2939507
 
 ## Project Objective
