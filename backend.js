@@ -3,6 +3,7 @@ import express from "express";
 import { MongoClient, ObjectId } from "mongodb";
 import dotenv from "dotenv";
 import cors from "cors";
+import OpenAI from "openai";
 
 dotenv.config();
 
@@ -185,6 +186,68 @@ app.delete("/api/fitness/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// ===== AI-Generated Fitness Plan =====
+app.post("/api/plan", async (req, res) => {
+  try {
+    const { records } = req.body;
+
+    // Initialize OpenAI client
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
+
+    // Build a summary of past workouts for the prompt
+    // build summary (works even if no records)
+    let summary;
+    if (!records || !Array.isArray(records) || records.length === 0) {
+      summary =
+        "This user has no previous workout records. Assume they are a beginner and generate a safe, progressive 4-week starter plan.";
+    } else {
+      summary = records
+        .map(
+          (r) =>
+            `• ${r.sportType || r.sport} for ${r.duration} min on ${new Date(
+              r.date
+            ).toLocaleDateString()} ${r.description ? `(${r.description})` : ""}`
+        )
+        .join("\n");
+    }
+
+    const prompt = `
+You are a certified personal trainer and fitness coach. 
+Here is this user's recent workout history:
+
+${summary}
+
+Based on these records, generate a 4-week personalized fitness plan focusing on gradual progression and balanced recovery.
+Each week should include 4-5 workout sessions and 1-2 rest/recovery days.
+Return the plan in clear, structured markdown format like this:
+Week 1:
+- ...
+Week 2:
+- ...
+Week 3:
+- ...
+Week 4:
+- ...
+Also provide short motivation tips at the end.
+    `;
+
+    console.log("Calling OpenAI for plan generation...");
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    const plan = completion.choices[0].message.content;
+
+    res.json({ plan });
+  } catch (err) {
+    console.error("AI plan generation error:", err);
+    res.status(500).json({ error: "Failed to generate AI fitness plan" });
+  }
+});
+
 
 // ===== test server =====
 app.get("/", (req, res) => {
