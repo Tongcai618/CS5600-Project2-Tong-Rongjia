@@ -55,3 +55,30 @@ The application demonstrates a full-stack implementation using Node.js, Express,
    ```bash
    git clone https://github.com/yourusername/fitness-tracker.git
    cd fitness-tracker
+
+2. **install the npm requirement**
+   ``` bash
+   npm install
+
+### AI Usage
+### 1. **ChatGPT**
+**Model:** GPT-5
+**Responsibility:**  
+- Designed backend architecture using Node + Express + MongoDB  
+- Helped implement authentication, CRUD endpoints, and data schema design  
+- Wrote frontend JavaScript modules for form handling and API requests  
+- Drafted and improved documentation (README, design doc, mockups)  
+- Assisted in debugging deployment and HTTPS mixed content issues  
+
+### 2. **Claude (Anthropic Claude 3.5 Sonnet)**
+**Model:** Sonnet 4.5
+**Responsibility:**  
+- Refined UI/UX logic for the login and workout pages  
+- Suggested improvements to HTML structure and Bootstrap integration  
+- Reviewed code organization for maintainability and readability  
+
+### 3. **Grok**
+**Model:** Grok4 Fast
+**Responsibility:**  
+- Contributed to the AI planning logic for generating 4-week personalized fitness plans  
+- Assisted with integrating OpenAI API responses into the frontend workflow  
