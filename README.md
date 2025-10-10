@@ -28,16 +28,16 @@ The application demonstrates a full-stack implementation using Node.js, Express,
 - Fully deployed web application accessible via HTTPS
 
 ## Screenshot
-- Sign Up
+### Sign Up
   <img width="1403" height="676" alt="image" src="https://github.com/user-attachments/assets/b026dec4-79d6-436c-8d53-eb57439439ce" />
 
-- Login
+### Login
   <img width="1403" height="676" alt="image" src="https://github.com/user-attachments/assets/fec78917-e706-4754-8745-8c305afdb94d" />
 
-- Fitness Record
+### Fitness Record
   <img width="1338" height="676" alt="image" src="https://github.com/user-attachments/assets/f9950960-98f7-45a8-8970-eb1a5239050d" />
 
-- AI Planning
+### AI Planning
   <img width="1338" height="676" alt="image" src="https://github.com/user-attachments/assets/cbafa00d-3125-48ff-bc6d-6ed87e460381" />
 
 
