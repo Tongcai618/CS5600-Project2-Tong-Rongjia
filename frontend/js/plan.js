@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:3000";
 
 document.getElementById("generatePlanBtn").addEventListener("click", async () => {
-    const uid = localStorage.getItem("uid");
+    const uid = "68e6a330980e29458bb10a00";
 
     if (!uid) {
         alert("Please log in first!");
@@ -15,34 +15,57 @@ document.getElementById("generatePlanBtn").addEventListener("click", async () =>
     planContainer.innerHTML = "";
 
     try {
-        // Fetch user workout records
-        const res = await fetch(`${BASE_URL}/api/fitness/${uid}`);
-        console.log(res);
-        const records = await res.json();
+        // Get user input values
+        const height = document.getElementById("height")?.value;
+        const weight = document.getElementById("weight")?.value;
+        const targetWeight = document.getElementById("targetWeight")?.value;
+        const activity = document.getElementById("activity")?.value;
 
-        if (records.length === 0) {
-            planContainer.innerHTML = `<div class="alert alert-info">No workout records found. Add some workouts first!</div>`;
+        // If any field is missing, show alert
+        if (!height || !weight || !targetWeight || !activity) {
             loading.style.display = "none";
+            alert("Please fill in all fields before generating your plan!");
             return;
         }
 
-        // Call backend OpenAI API to generate plan
+        // Fetch user workout records
+        const res = await fetch(`${BASE_URL}/api/fitness/${uid}`);
+        const records = await res.json();
+
+        // If no records, allow plan generation using only inputs
+        if (!records || records.length === 0) {
+            console.warn("No workout records found, generating plan from inputs only.");
+        }
+
+        // Call backend AI endpoint
         const aiRes = await fetch(`${BASE_URL}/api/plan`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ records }),
+            body: JSON.stringify({
+                uid,
+                records,
+                userInfo: {
+                    height,
+                    weight,
+                    targetWeight,
+                    activity,
+                },
+            }),
         });
 
         const data = await aiRes.json();
         loading.style.display = "none";
 
-        // 3️⃣ Render AI-generated plan
+        // Render AI-generated plan
         planContainer.innerHTML = `
-      <div class="card shadow p-4">
-        <h4 class="text-success mb-3">🏆 Your AI Fitness Plan</h4>
-        <pre style="white-space: pre-wrap; font-size: 1rem;">${data.plan}</pre>
-      </div>
-    `;
+        <div class="card shadow p-4">
+          <h4 class="text-success mb-3">🏆 Your AI Fitness Plan</h4>
+          <div class="markdown-body" style="font-size: 1rem; line-height: 1.6;">
+            ${marked.parse(data.plan)}
+          </div>
+        </div>
+      `;
+
     } catch (err) {
         console.error("Error generating plan:", err);
         loading.style.display = "none";

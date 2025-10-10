@@ -190,47 +190,76 @@ app.delete("/api/fitness/:id", async (req, res) => {
 // ===== AI-Generated Fitness Plan =====
 app.post("/api/plan", async (req, res) => {
   try {
-    const { records } = req.body;
-
-    // Initialize OpenAI client
+    const { records, userInfo } = req.body;
     const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
 
-    // Build a summary of past workouts for the prompt
-    // build summary (works even if no records)
+    // 1. Build a workout summary (handles empty records gracefully)
     let summary;
     if (!records || !Array.isArray(records) || records.length === 0) {
       summary =
-        "This user has no previous workout records. Assume they are a beginner and generate a safe, progressive 4-week starter plan.";
+        "This user has no previous workout records. Assume they are a beginner starting their fitness journey.";
     } else {
       summary = records
         .map(
           (r) =>
             `• ${r.sportType || r.sport} for ${r.duration} min on ${new Date(
               r.date
-            ).toLocaleDateString()} ${r.description ? `(${r.description})` : ""}`
+            ).toLocaleDateString()}${r.description ? ` (${r.description})` : ""}`
         )
         .join("\n");
     }
 
-    const prompt = `
-You are a certified personal trainer and fitness coach. 
-Here is this user's recent workout history:
+    // 2. Add user profile info
+    const { height, weight, targetWeight, activity } = userInfo || {};
+    const profileText = `
+User Profile:
+- Height: ${height || "N/A"} cm
+- Current Weight: ${weight || "N/A"} kg
+- Target Weight: ${targetWeight || "N/A"} kg
+- Activity Level: ${activity || "N/A"}
+`;
 
+    // 3. Build final AI prompt
+    const prompt = `
+You are a certified personal trainer and fitness coach.
+
+${profileText}
+
+Here is this user's recent workout history:
 ${summary}
 
-Based on these records, generate a 4-week personalized fitness plan focusing on gradual progression and balanced recovery.
-Each week should include 4-5 workout sessions and 1-2 rest/recovery days.
-Return the plan in clear, structured markdown format like this:
-Week 1:
+---
+
+### Your Task:
+1. Start with a **brief summary paragraph (2-4 sentences)** analyzing the workout history and overall fitness level.
+   - Write it **in the second person ("you have")**, as if you are directly addressing the user.
+   - Describe what their history shows (frequency, type, intensity, or lack thereof).
+   - Comment on how this informs your upcoming 4-week plan design.
+2. Then create a **4-week personalized fitness plan**.
+
+Guidelines for the plan:
+- Focus on gradual progression and safe intensity for their current level.
+- Tailor the plan toward their target weight and activity level.
+- Each week should include 4-5 workout sessions and 1-2 rest/recovery days.
+- Suggest workout types (e.g., cardio, strength, flexibility) and durations.
+- Return the entire response in **structured Markdown** format.
+
+Example structure:
+# Workout History Summary
+[Write your summary here]
+
+## Week 1:
 - ...
-Week 2:
+## Week 2:
 - ...
-Week 3:
+## Week 3:
 - ...
-Week 4:
+## Week 4:
 - ...
-Also provide short motivation tips at the end.
-    `;
+
+### Motivation Tips:
+- ...
+`;
 
     console.log("Calling OpenAI for plan generation...");
 
@@ -240,7 +269,6 @@ Also provide short motivation tips at the end.
     });
 
     const plan = completion.choices[0].message.content;
-
     res.json({ plan });
   } catch (err) {
     console.error("AI plan generation error:", err);
