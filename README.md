@@ -4,6 +4,9 @@
 ## Author
 Cai Tong, Rongjia Sun
 
+## public server
+http://54.211.172.19
+
 ## Class Link
 [CS5610WebDev Online]
 
