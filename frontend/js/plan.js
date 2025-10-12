@@ -4,7 +4,7 @@ const BASE_URL = "http://54.211.172.19:3000";
 document
   .getElementById("generatePlanBtn")
   .addEventListener("click", async () => {
-    const uid = "68e6a330980e29458bb10a00";
+    const uid = localStorage.getItem("uid");
 
     if (!uid) {
       alert("Please log in first!");
