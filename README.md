@@ -49,6 +49,28 @@ The application demonstrates a full-stack implementation using Node.js, Express,
 ### AI Planning
   <img width="1338" height="676" alt="image" src="https://github.com/user-attachments/assets/cbafa00d-3125-48ff-bc6d-6ed87e460381" />
 
+## Technology Requirements
+
+### Core Technologies
+
+- **Backend:** Node.js v16+ with Express.js framework
+- **Database:** MongoDB with Atlas (cloud)
+- **Frontend:** Vanilla JavaScript (ES6 Modules)
+- **Authentication:** Express-session for session-based auth
+- **Styling:** Custom CSS3 with responsive design
+
+### Development Tools
+
+- **ESLint:** JavaScript linting and code quality
+- **Prettier:** Code formatting and consistency
+- **Docker:** MongoDB containerization (recommended)
+- **Git:** Version control with clear commit history
+
+### Browser Support
+
+- Modern browsers supporting ES6+ features
+- Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+- Mobile-responsive design for all screen sizes
 
 ## Instructions to Build and Run
 
