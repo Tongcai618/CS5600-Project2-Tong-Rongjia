@@ -2,7 +2,13 @@
 # Fitness Tracker Web App
 
 ## Author
-Cai Tong, Rongjia Sun
+Cai Tong
+
+Email: cai.to@northeastern.edu
+
+Rongjia Sun
+
+Email: sun.rongj@northeastern.edu
 
 ## public server
 http://54.211.172.19
