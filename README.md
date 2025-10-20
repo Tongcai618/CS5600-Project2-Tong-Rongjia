@@ -11,7 +11,7 @@ Rongjia Sun
 Email: sun.rongj@northeastern.edu
 
 ## public server
-http://54.211.172.19
+[http://54.211.172.19](http://54.211.172.19:8080/)
 
 ## Class Link
 [CS5610WebDev Online]
