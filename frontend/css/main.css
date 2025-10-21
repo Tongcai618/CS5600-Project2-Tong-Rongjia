@@ -1,4 +1,6 @@
 /* Font and background */
+/* Ensure tables don’t overflow on small screens—use cards or overflow-x:auto. Min tap target size ~44px; avoid hover-only affordances on mobile. */
+
 body {
     font-family: "Poppins", sans-serif;
     /* background: linear-gradient(135deg, #dcecff, #f8f9ff); */
