@@ -1,3 +1,8 @@
+```
+Issue: We are not supposed to expose/hardcode production server IP (const BASE_URL = "http://54.211.172.19:3000";).
+Better fix would be to use relative URL instead (${window.location.protocol}//${window.location.hostname}:3000)
+```
+
 const BASE_URL = "http://54.211.172.19:3000";
 // const BASE_URL = "http://localhost:3000"
 
@@ -14,6 +19,10 @@ document
 
     const loading = document.getElementById("loading");
     const planContainer = document.getElementById("planContainer");
+    ```
+    Use CSS classes instead of inline styling
+    loading.classList.remove("hidden");
+    ```
     loading.style.display = "block";
     planContainer.innerHTML = "";
 
@@ -26,6 +35,12 @@ document
 
       // If any field is missing, show alert
       if (!height || !weight || !targetWeight || !activity) {
+        ```
+        Use CSS classes instead of inline styling
+        loading.classList.add("hidden");
+        Then add to page.css:
+        .hidden { display: none; }
+        ```
         loading.style.display = "none";
         alert("Please fill in all fields before generating your plan!");
         return;
@@ -59,8 +74,20 @@ document
       });
 
       const data = await aiRes.json();
+      ```
+      Use CSS classes instead of inline styling
+      loading.classList.add("hidden");
+      Then add to page.css:
+      .hidden { display: none; }
+      ```
       loading.style.display = "none";
 
+      ```
+      Avoid inline styling:
+          (<div class="card shadow p-4 text-start" style="text-align: left;">)
+          (<div class="markdown-body" style="font-size: 1rem; line-height: 1.6; text-align: left;">)
+      Move styling to CSS files
+      ```
       // Generate the plan
       planContainer.innerHTML = `
         <div class="card shadow p-4 text-start" style="text-align: left;">
