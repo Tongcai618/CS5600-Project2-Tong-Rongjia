@@ -1,3 +1,5 @@
+//Centralize Mongo connection with retry/backoff and clean shutdown handlers (SIGINT, SIGTERM). Add indexes ({ userId: 1, date: -1 }) for workout queries.
+
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 
