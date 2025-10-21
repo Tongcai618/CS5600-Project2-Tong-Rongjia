@@ -1,3 +1,8 @@
+```
+Issue: We are not supposed to expose/hardcode production server IP (const BASE_URL = "http://54.211.172.19:3000";).
+Better fix would be to use relative URL instead (${window.location.protocol}//${window.location.hostname}:3000)
+```
+
 const BASE_URL = "http://54.211.172.19:3000";
 // const BASE_URL = "http://localhost:3000"
 
