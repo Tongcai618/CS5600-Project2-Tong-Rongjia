@@ -1,3 +1,6 @@
+//Centralize a small ui/toast.js and ui/spinner.js; show success + error paths consistently. Consider a services/api.js wrapper around fetch().
+
+
 const BASE_URL = "http://54.211.172.19:3000";
 // const BASE_URL = "http://localhost:3000"
 
