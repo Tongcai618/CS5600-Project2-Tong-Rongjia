@@ -1,3 +1,8 @@
+```
+Better to add instructions for configuring environment, seeding the database and running the app locally.
+Add PPT, Video, Documentation links to readme, along with the live site link. You can also deploy the web-app on render.
+```
+
 # CS5600-Project2-Tong-Rongjia
 # Fitness Tracker Web App
 
